@@ -10,7 +10,7 @@
       </section>
       <section>
         <ul class="task-count">
-          <li>2个任务未完成</li>
+          <li>{{unfinishedCount}}个任务未完成</li>
           <li class="action">
             <a v-for="(item, index) in actionItems" :key="index" :class="{active: item.isActive}" @click="handleChange(item)">{{item.title}}</a>
           </li>
@@ -44,21 +44,31 @@
 
 <script>
 import * as Utils from '@/utils/utils'
+let filter = {
+  all: function (list) {
+    return list
+  },
+  finished: function (list) {
+    return list.filter((item) => {
+      if (item.isChecked) {
+        return true
+      }
+    })
+  },
+  unfinished: function (list) {
+    return list.filter((item) => {
+      if (!item.isChecked) {
+        return true
+      }
+    })
+  }
+}
 export default {
   name: 'List',
   data () {
     return {
       todo: '',
-      list: [
-        // {
-        //   title: '学习',
-        //   isChecked: false
-        // },
-        // {
-        //   title: '多喝水呀呀呀',
-        //   isChecked: false
-        // }
-      ],
+      list: [],
       actionItems: [
         {
           title: '全部',
@@ -78,27 +88,11 @@ export default {
       ],
       hash: 'all',
       editingItem: null,
-      initText: ''
+      initText: '',
+      unfinishedCount: 0
     }
   },
   methods: {
-    all (list) {
-      return list
-    },
-    finished (list) {
-      return list.filter((item) => {
-        if (item.isChecked) {
-          return true
-        }
-      })
-    },
-    unfinished (list) {
-      return list.filter((item) => {
-        if (!item.isChecked) {
-          return true
-        }
-      })
-    },
     addTodo () {
       let todoObj = {
         title: this.todo,
@@ -114,7 +108,6 @@ export default {
           this.list.push(todoObj)
           Utils.setItem('todoList', this.list)
         }
-        // this.list.push(todoObj)
       }
       this.todo = ''
     },
@@ -123,7 +116,6 @@ export default {
       Utils.setItem('todoList', this.list)
     },
     editTodo (item) {
-      // this.initText = item.title
       this.editingItem = item
     },
     // 判断是否为当前编辑元素
@@ -135,9 +127,8 @@ export default {
       Utils.setItem('todoList', this.list)
     },
     checking (item) {
-      if (item) {
-        Utils.setItem('todoList', this.list)
-      }
+      Utils.setItem('todoList', this.list)
+      console.log(item)
     },
     handleChange (item) {
       for (let i = 0, len = this.actionItems.length; i < len; i++) {
@@ -151,16 +142,18 @@ export default {
     showList () {
       let that = this
       let listStorage = Utils.getItem('todoList')
-      if (listStorage.length > 0) {
+      if (listStorage && listStorage.length > 0) {
         that.list = listStorage
       }
-      if (that.hash === 'finished') {
-        return that.finished(that.list)
-      } else if (that.hash === 'unfinished') {
-        return that.unfinished(that.list)
-      } else {
-        return that.list
-      }
+      that.unfinishedCount = filter['unfinished'](that.list).length
+      // if (that.hash === 'finished') {
+      //   return that.finished(that.list)
+      // } else if (that.hash === 'unfinished') {
+      //   return that.unfinished(that.list)
+      // } else {
+      //   return that.list
+      // }
+      return filter[that.hash] ? filter[that.hash](that.list) : that.list
     }
   },
   directives: {

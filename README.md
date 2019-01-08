@@ -2,6 +2,24 @@
 
 > A todoList project by Vue.js
 
+## 展示地址
+http://www.antingjuan.top/vue-todolist/#/
+
+## 实现功能和步骤
+☺* 添加事项 (输入标题后回车添加，如果内容为空或只有空格会清空，什么都不添加)
+
+☺* 删除事项 (点击标题后面的-)
+
+☺* 完成事项 (点击标题前面的复选框)
+
+☺* 编辑单条事项 (点击标题进入编辑模式)
+
+☺* 取消编辑 (失去焦点时)
+
+☺* 过滤任务，显示全部，未完成，已完成的备忘录(点击全部，未完成，已完成按钮)
+
+☺*显示未完成条数
+
 ## Build Setup
 
 ``` bash
@@ -14,17 +32,4 @@ npm run dev
 # build for production with minification
 npm run build
 
-# build for production and view the bundle analyzer report
-npm run build --report
 
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
