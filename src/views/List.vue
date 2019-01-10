@@ -6,7 +6,10 @@
     <div class="main">
       <section>
         <h3 class="section-title">添加计划</h3>
-        <input type="text" class="task-input" placeholder="添加ToDo" v-model="todo" @keyup.enter="addTodo">
+        <div class="add-box">
+          <input type="text" class="task-input" placeholder="添加ToDo" v-model="todo" @keyup.enter="addTodo" @blur.prevent="addTodo">
+          <button class="task-btn" @click="addTodo()">确定</button>
+        </div>
       </section>
       <section>
         <ul class="task-count">
@@ -18,6 +21,7 @@
       </section>
       <section class="tasks">
         <h3 class="section-title">计划列表</h3>
+        <!-- <p>2019-01-10</p> -->
         <ul class="todo-list">
           <!-- 通过editing样式来控制是否显示可编辑input框 -->
           <li v-for="(item, index) in showList" :key="index" :class="{completed: item.isChecked, editing: isEditingItem(item)}">
@@ -101,11 +105,11 @@ export default {
       if (this.todo.trim() !== '') {
         let listStorage = Utils.getItem('todoList')
         if (listStorage) {
-          listStorage.push(todoObj)
+          listStorage.unshift(todoObj)
           this.list = listStorage
           Utils.setItem('todoList', listStorage)
         } else {
-          this.list.push(todoObj)
+          this.list.unshift(todoObj)
           Utils.setItem('todoList', this.list)
         }
       }
@@ -203,14 +207,31 @@ a {
   color: #666;
   margin-bottom: 10px;
 }
+.add-box {
+  display: flex;
+}
 .task-input {
-  width: 100%;
+  flex: 1;
   font-size: 14px;
   height: 24px;
   line-height: 24px;
   background: #fff;
   border-radius: 3px;
   text-indent: 10px;
+  border: 1px solid hsla(0,0%,59.2%,.2);
+  background-color: rgba(227,231,236,.2);
+  border-radius: 4px;
+}
+.task-btn {
+  width: 15%;
+  height: 28px;
+  line-height: 28px;
+  padding: 0;
+  margin-left: 4px;
+  border: 0;
+  border-radius: 4px;
+  background-color: #5882dd;
+  color: #fff;
 }
 .task-count {
   display: flex;
@@ -227,7 +248,8 @@ a {
   color: #666;
 }
 .action a.active {
-  border: 1px solid #5882dd;
+  border-bottom: 3px solid #5882dd;
+  /* border-radius: 4px; */
 }
 .todo-list li {
   height: 32px;
