@@ -2,9 +2,6 @@
 
 > A todoList project by Vue.js
 
-## 展示地址
-http://www.antingjuan.top/vue-todolist/#/
-
 ## 实现功能和步骤
 ☺* 添加事项 (输入标题后回车或点击确定添加，如果内容为空或只有空格会清空，什么都不添加)
 
